@@ -191,13 +191,13 @@ static UIView *_currentToastView = nil;
 
               if (duration > 0.0f) {
                 dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(duration * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-                    [self ks_dismissToast:completion];
+                    [self ks_dismissToastWithCompletion:completion];
                 });
               }
 	});
 }
 
-+ (void)ks_dismissToast:(KSToastBlock)completion {
++ (void)ks_dismissToastWithCompletion:(KSToastBlock)completion {
     [UIView animateWithDuration:KS_TOAST_VIEW_ANIMATION_DURATION animations: ^{
         _currentToastView.alpha = 0.0f;
     } completion: ^(BOOL finished) {
