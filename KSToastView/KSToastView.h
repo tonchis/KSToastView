@@ -50,5 +50,6 @@ typedef void (^KSToastBlock)(void);
 + (void)ks_showToast:(id)toast duration:(NSTimeInterval)duration;
 + (void)ks_showToast:(id)toast completion:(KSToastBlock)completion;
 + (void)ks_showToast:(id)toast duration:(NSTimeInterval)duration completion:(KSToastBlock)completion;
++ (void)ks_dismissToast:(KSToastBlock)completion;
 
 @end

@@ -45,6 +45,7 @@ static CGFloat _offsetBottom = KS_TOAST_VIEW_OFFSET_BOTTOM;
 static CGFloat _offsetTop = KS_TOAST_VIEW_OFFSET_TOP;
 static CGFloat _textPadding = KS_TOAST_VIEW_TEXT_PADDING;
 static NSTextAlignment _textAligment = NSTextAlignmentCenter;
+static UIView *_currentToastView = nil;
 
 @interface KSToastView ()
 
@@ -186,19 +187,27 @@ static NSTextAlignment _textAligment = NSTextAlignmentCenter;
 		    toastView.alpha = 1.0f;
 		}];
 
-		dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(duration * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-			[UIView animateWithDuration:KS_TOAST_VIEW_ANIMATION_DURATION animations: ^{
-			    toastView.alpha = 0.0f;
-			} completion: ^(BOOL finished) {
-			    [toastView removeFromSuperview];
+              _currentToastView = toastView;
 
-			    KSToastBlock block = [completion copy];
-			    if (block) {
-			        block();
-				}
-			}];
-		});
+              if (duration) {
+                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(duration * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                    [self ks_dismissToast:completion];
+                });
+              }
 	});
+}
+
++ (void)ks_dismissToast:(KSToastBlock)completion {
+    [UIView animateWithDuration:KS_TOAST_VIEW_ANIMATION_DURATION animations: ^{
+        _currentToastView.alpha = 0.0f;
+    } completion: ^(BOOL finished) {
+        [_currentToastView removeFromSuperview];
+
+        KSToastBlock block = [completion copy];
+        if (block) {
+            block();
+        }
+    }];
 }
 
 #pragma mark - Private Methods
