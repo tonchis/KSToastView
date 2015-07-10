@@ -189,7 +189,7 @@ static UIView *_currentToastView = nil;
 
               _currentToastView = toastView;
 
-              if (duration) {
+              if (duration > 0.0f) {
                 dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(duration * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
                     [self ks_dismissToast:completion];
                 });
